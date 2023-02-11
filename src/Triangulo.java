@@ -11,13 +11,10 @@ import javax.swing.JPanel;
 public class Triangulo extends JFrame{
 
     private final int CONSTANTE = 20;
+    private final float MAXIMIZAR = 1.1f; 
     private JPanel panel;
     private int x1=250, y1 = 200, x2 = 300, y2=240;
-    private boolean flag = false, up, left, right, down;  
-
-    
-    
-
+    private boolean flag = false, up, left, right, down, max;
     public Triangulo(){
         super("Dibujar un triangulo");
         this.setSize(650,500);
@@ -77,6 +74,7 @@ public class Triangulo extends JFrame{
             pintarTriangulo(g);
             flag = false;
             right = false;
+
         }else if(flag && left){
             g.setColor(new Color(0,0,0));
             pintarTriangulo(g);
@@ -88,6 +86,14 @@ public class Triangulo extends JFrame{
             pintarTriangulo(g);
             flag = false;
             left = false;
+        }else if(flag && max){
+            g.setColor(new Color(0,0,0));
+            pintarTriangulo(g);
+
+            // pintamos con las nuevas coordenadas
+            g.setColor(Color.BLACK);
+            flag = false;
+            max = false;
         }
 
         g.setColor(Color.BLACK);
@@ -98,7 +104,9 @@ public class Triangulo extends JFrame{
 
     private void pintarTriangulo(Graphics g){
 
-        pintarBase(y1, g);
+        
+        // Pintamos la base
+        algoritmoBresenham(x1, y1, x1, y1+61, g);
 
         // creamos el lado derecho del triangulo
         algoritmoBresenham(x1, y1, x2, y2, g);
@@ -130,13 +138,6 @@ public class Triangulo extends JFrame{
             y1 = y1 + sy;
             }
         }
-    }
-
-    public void pintarBase(int coordenada, Graphics g){
-
-        for(int i = coordenada; i <= (coordenada+60); i++){
-            g.drawRect(x1,i,1,1);
-        }
         repaint();
     }
 
@@ -160,6 +161,9 @@ public class Triangulo extends JFrame{
                 }else if(e.getKeyCode()==KeyEvent.VK_LEFT){
                     flag = true;
                     left = true;
+                }else if(e.getKeyCode() == KeyEvent.VK_M){
+                    flag = true;
+                    max = true;
                 }
                 
                 if(e.getKeyCode()==KeyEvent.VK_ESCAPE){
@@ -177,7 +181,7 @@ public class Triangulo extends JFrame{
 
 
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() { // invocar una ventana con un hilo
+        EventQueue.invokeLater(new Runnable() { 
             @Override
             public void run() {
                 try{
