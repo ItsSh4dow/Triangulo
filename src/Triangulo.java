@@ -11,10 +11,9 @@ import javax.swing.JPanel;
 public class Triangulo extends JFrame{
 
     private final int CONSTANTE = 20;
-    private final float MAXIMIZAR = 1.1f; 
     private JPanel panel;
-    private int x1=250, y1 = 200, x2 = 300, y2=240;
-    private boolean flag = false, up, left, right, down, max;
+    private int x1=250, y1 = 200, x2 = 300, y2=240, aux =260;
+    private boolean flag = false, up, left, right, down, max, min;
     public Triangulo(){
         super("Dibujar un triangulo");
         this.setSize(650,500);
@@ -47,6 +46,7 @@ public class Triangulo extends JFrame{
             g.setColor(Color.BLACK);
             y1 -= CONSTANTE;
             y2 -= CONSTANTE;
+            aux -= CONSTANTE;
 
             pintarTriangulo(g);
             flag = false;
@@ -55,43 +55,62 @@ public class Triangulo extends JFrame{
             g.setColor(new Color(0,0,0));
             pintarTriangulo(g);
 
-            // pintamos con las nuevas coordenadas
             g.setColor(Color.BLACK);
             y1 += CONSTANTE;
             y2 += CONSTANTE;
-
+            aux += CONSTANTE;
             pintarTriangulo(g);
+
             flag = false;
             down = false;
         }else if(flag && right){
             g.setColor(new Color(0,0,0));
             pintarTriangulo(g);
-
-            // pintamos con las nuevas coordenadas
+            
             g.setColor(Color.BLACK);
             x1 += CONSTANTE;
             x2 += CONSTANTE;
             pintarTriangulo(g);
+
             flag = false;
             right = false;
-
         }else if(flag && left){
             g.setColor(new Color(0,0,0));
             pintarTriangulo(g);
 
-            // pintamos con las nuevas coordenadas
+            
             g.setColor(Color.BLACK);
             x1 -= CONSTANTE;
             x2 -= CONSTANTE;
             pintarTriangulo(g);
+
             flag = false;
             left = false;
         }else if(flag && max){
             g.setColor(new Color(0,0,0));
             pintarTriangulo(g);
-
-            // pintamos con las nuevas coordenadas
+            
             g.setColor(Color.BLACK);
+            aux +=5;
+            y2 += 5;
+            x2 +=5;
+            y1 -=5;
+            pintarTriangulo(g);
+
+            flag = false;
+            max = false;
+        }else if(flag && min){
+
+            g.setColor(new Color(0,0,0));
+            pintarTriangulo(g);
+            
+            g.setColor(Color.BLACK);
+            aux -=5;
+            y2 -= 5;
+            x2 -=5;
+            y1 +=5;
+            pintarTriangulo(g);
+
             flag = false;
             max = false;
         }
@@ -103,10 +122,9 @@ public class Triangulo extends JFrame{
     }
 
     private void pintarTriangulo(Graphics g){
-
         
         // Pintamos la base
-        algoritmoBresenham(x1, y1, x1, y1+61, g);
+        algoritmoBresenham(x1, y1, x1, aux, g);
 
         // creamos el lado derecho del triangulo
         algoritmoBresenham(x1, y1, x2, y2, g);
@@ -161,9 +179,12 @@ public class Triangulo extends JFrame{
                 }else if(e.getKeyCode()==KeyEvent.VK_LEFT){
                     flag = true;
                     left = true;
-                }else if(e.getKeyCode() == KeyEvent.VK_M){
+                }else if(e.getKeyCode() == KeyEvent.VK_ENTER){
                     flag = true;
                     max = true;
+                }else if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+                    flag = true;
+                    min = true;
                 }
                 
                 if(e.getKeyCode()==KeyEvent.VK_ESCAPE){
@@ -178,8 +199,7 @@ public class Triangulo extends JFrame{
             
         panel.addKeyListener(eventoTeclado);    
     }
-
-
+    
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() { 
             @Override
