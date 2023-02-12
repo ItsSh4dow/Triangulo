@@ -14,6 +14,12 @@ public class Triangulo extends JFrame{
     private JPanel panel;
     private int x1=250, y1 = 200, x2 = 300, y2=240, aux =260;
     private boolean flag = false, up, left, right, down, max, min;
+    int trianguloX[] = {x1,x2};
+    int trianguloY[] = {y1,y2}; 
+    private double grados = 45;
+    double radianes = Math.toRadians(grados);
+    double matrizRotacion[][] = {{Math.cos(radianes), -Math.sin(radianes), 0},{Math.sin(radianes), Math.cos(radianes), 0}, {0,0,1}};
+
     public Triangulo(){
         super("Dibujar un triangulo");
         this.setSize(650,500);
@@ -59,8 +65,7 @@ public class Triangulo extends JFrame{
             y1 += CONSTANTE;
             y2 += CONSTANTE;
             aux += CONSTANTE;
-            pintarTriangulo(g);
-
+            
             flag = false;
             down = false;
         }else if(flag && right){
@@ -70,32 +75,26 @@ public class Triangulo extends JFrame{
             g.setColor(Color.BLACK);
             x1 += CONSTANTE;
             x2 += CONSTANTE;
-            pintarTriangulo(g);
 
             flag = false;
             right = false;
         }else if(flag && left){
             g.setColor(new Color(0,0,0));
-            pintarTriangulo(g);
 
-            
             g.setColor(Color.BLACK);
             x1 -= CONSTANTE;
             x2 -= CONSTANTE;
-            pintarTriangulo(g);
 
             flag = false;
             left = false;
         }else if(flag && max){
             g.setColor(new Color(0,0,0));
-            pintarTriangulo(g);
             
             g.setColor(Color.BLACK);
             aux +=5;
             y2 += 5;
             x2 +=5;
             y1 -=5;
-            pintarTriangulo(g);
 
             flag = false;
             max = false;
@@ -109,7 +108,6 @@ public class Triangulo extends JFrame{
             y2 -= 5;
             x2 -=5;
             y1 +=5;
-            pintarTriangulo(g);
 
             flag = false;
             max = false;
@@ -199,7 +197,6 @@ public class Triangulo extends JFrame{
             
         panel.addKeyListener(eventoTeclado);    
     }
-    
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() { 
             @Override
